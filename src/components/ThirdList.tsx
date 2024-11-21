@@ -107,7 +107,13 @@ const ThirdList: React.FC<ThirdListProps> = ({
           <option value="client">Cliente</option>
           <option value="vendor">Proveedor</option>
         </select>
-        <button onClick={() => setSearch("")} className="btn-icon">
+        <button
+          onClick={() => {
+            setSearch("");
+            setCategory("all");
+          }}
+          className="btn-icon"
+        >
           <i className="ti ti-backspace" ></i>
           <img src="" />
         </button>
