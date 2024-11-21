@@ -1,0 +1,193 @@
+:root {
+  --background-color: #1e1e1e;
+  --card-background: #2b2b2b;
+  --text-color: #ffffff;
+  --input-background: #3b3b3b;
+  --button-background: #007bff;
+  --button-hover: #0056b3;
+  --danger-button-background: #dc3545;
+  --danger-button-hover: #c82333;
+  --button-secondary: #c47500;
+  --button-secondary-hover: #a56600;
+  --line-color: #444444;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+header {
+  font-size: 1.5em;
+  align-items: center;
+  text-align: center;
+  color: var(--text-color);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.separator-vertical {
+  width: 1px;
+  background-color: var(--line-color);
+  border: none;
+}
+
+button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: large;
+  padding: 8px 12px;
+  background-color: var(--button-background);
+  border: none;
+  border-radius: 5px;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--button-hover);
+  transform: scale(1.1);
+}
+
+.button.btn-edit {
+  display: none;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+.btn-icon {
+  background-color: var(--line-color) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease !important;
+}
+
+.btn-icon:hover {
+  transform: scale(1.05) !important;
+  border: 1px solid darkgreen;
+}
+
+.action-buttons {
+  display: flex !important;
+  flex-direction: row;
+  gap: 10px;
+}
+
+button.btn-danger {
+  background-color: var(--danger-button-background);
+  color: var(--text-color);
+}
+
+button.btn-danger:hover {
+  background-color: var(--danger-button-hover);
+}
+
+button.btn-secondary {
+  background-color: var(--button-secondary);
+  color: var(--text-color);
+}
+
+button.btn-primary {
+  background-color: var(--button-background);
+  color: var(--text-color);
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+}
+
+input[type="text"],
+select {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--input-background);
+  color: var(--text-color);
+  font-size: 1em;
+  flex: 1;
+}
+
+input::placeholder {
+  color: var(--text-color);
+  opacity: 0.7;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  margin: 0;
+  padding: 0;
+}
+
+.hr-line {
+  border: none;
+  border-top: 1px solid var(--line-color);
+  margin: 10px 0;
+}
+
+.list-container {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.card {
+  background-color: var(--card-background);
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.route-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.button.btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+
+.comment-box {
+  width: 90%;
+  padding: 8px;
+  margin-top: 10px;
+  border: 1px solid var(--line-color);
+  border-radius: 5px;
+  background-color: var(--input-background);
+  color: var(--text-color);
+  resize: none;
+}
+
+.comment-box::placeholder {
+  color: #b3b3b3;
+  opacity: 0.7;
+}

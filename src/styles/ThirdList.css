@@ -1,0 +1,110 @@
+.ThirdList {
+  background-color: var(--background-color);
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 1200px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.search-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.search-container input,
+.search-container select {
+  padding: 10px;
+  border: 1px solid var(--line-color);
+  border-radius: 5px;
+  font-size: 14px;
+  width: 100%;
+}
+
+.search-container button {
+  padding: 10px;
+  border: none;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.search-container button:hover {
+  background-color: var(--primary-color-hover);
+}
+
+.third-party-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+}
+
+.third-party-card {
+  position: relative;
+  background-color: var(--card-background);
+  padding: 15px;
+  border: 1px solid var(--line-color);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+.third-party-card:hover {
+  transform: scale(1.03);
+  border: 1px solid darkgreen;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.third-party-card:hover .btn-edit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.third-party-card p {
+  margin: 5px 0;
+  word-wrap: break-word;
+}
+
+.btn-edit {
+  position: absolute;
+  right: 10px;
+  width: 40px; /* Ajusta el tamaño del botón */
+  height: 40px; /* Mantén proporciones cuadradas */
+  background-color: var(--button-background);
+  border: none;
+  color: var(--button-color);
+  display: flex; /* Asegura que el icono esté centrado */
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%; /* Redondea completamente el botón */
+  cursor: pointer;
+  opacity: 0; /* Inicialmente oculto */
+  transform: translateY(-10px); /* Efecto para animación */
+  transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+}
+
+.btn-edit:hover {
+  background-color: var(--button-hover-background);
+  color: var(
+    --button-hover-color
+  ); /* Opcional: Cambia el color del icono al hacer hover */
+}
+
+.hr-line {
+  border: none;
+  border-top: 1px solid var(--line-color);
+  margin: 15px 0;
+}
