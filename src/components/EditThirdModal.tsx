@@ -1,9 +1,4 @@
 import React, { useState, useEffect } from "react";
-import {
-  IconDeviceFloppy,
-  IconEyeClosed,
-  IconMoodX,
-} from "@tabler/icons-react";
 
 interface EditThirdModalProps {
   isOpen: boolean;
@@ -116,10 +111,10 @@ const EditThirdModal: React.FC<EditThirdModalProps> = ({
               className="btn-secondary"
               onClick={handleDelete}
             >
-              <IconMoodX stroke={2} />
+              <i className="ti ti-mood-off"></i>
             </button>
             <button title="Cerrar" className="btn-danger" onClick={onClose}>
-              <IconEyeClosed stroke={2} />
+              <i className="ti ti-x"></i>
             </button>
           </div>
         </header>
@@ -173,8 +168,8 @@ const EditThirdModal: React.FC<EditThirdModalProps> = ({
             </select>
           </div>
           <div className="action-buttons">
-            <button className="button" onClick={handleSave}>
-              <IconDeviceFloppy stroke={2} /> Guardar Cambios
+            <button className="button" onClick={handleSave} title="Guardar">
+              <i className="ti ti-device-floppy"></i> Guardar Cambios
             </button>
           </div>
         </div>

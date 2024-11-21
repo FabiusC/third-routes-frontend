@@ -11,13 +11,6 @@ import {
   deleteThirdParty,
 } from "../services/api";
 
-// import Icons
-import {
-  IconEdit,
-  IconMoodPlus,
-  IconHistoryToggle,
-  IconBackspace,
-} from "@tabler/icons-react";
 const ThirdList: React.FC<ThirdListProps> = ({
   thirdParties,
   addToRoute,
@@ -115,14 +108,14 @@ const ThirdList: React.FC<ThirdListProps> = ({
           <option value="vendor">Proveedor</option>
         </select>
         <button onClick={() => setSearch("")} className="btn-icon">
-          <IconBackspace stroke={2} />
+          <i className="ti ti-backspace" ></i>
           <img src="" />
         </button>
         <button onClick={openHistoryModal} className="btn-icon">
-          <IconHistoryToggle stroke={2} />
+          <i className="ti ti-history" ></i>
         </button>
         <button onClick={() => setAddModalOpen(true)} className="btn-icon">
-          <IconMoodPlus stroke={2} />
+          <i className="ti ti-mood-plus" ></i>
         </button>
       </div>
       <hr className="hr-line" />
@@ -159,7 +152,7 @@ const ThirdList: React.FC<ThirdListProps> = ({
                 onClick={(e) => openEditModal(tp, e)}
                 aria-label={`Editar ${tp.name}`}
               >
-                <IconEdit stroke={2} />
+                <i className="ti ti-edit"></i>
               </button>
             </li>
           ))}

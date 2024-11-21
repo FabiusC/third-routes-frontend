@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "../styles/Route.css";
 import { ThirdParty } from "../types/Types";
-import { IconDeviceFloppy, IconFileDownload } from "@tabler/icons-react";
 import { jsPDF } from "jspdf";
 
 interface RouteProps {
@@ -112,14 +111,14 @@ const Route: React.FC<RouteProps> = ({
             className="button btn-icon"
             title="Guardar"
           >
-            <IconDeviceFloppy stroke={2} />
+            <i className="ti ti-device-floppy"></i>
           </button>
           <button
             onClick={downloadPDF}
             className="button btn-icon"
             title="Imprimir"
           >
-            <IconFileDownload stroke={2} />
+            <i className="ti ti-file-download"></i>
           </button>
         </div>
       </div>

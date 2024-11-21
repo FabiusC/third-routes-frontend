@@ -53,8 +53,8 @@ const RoutesHistoryModal: React.FC<RoutesHistoryModalProps> = ({
     <div className="modal-overlay">
       <div className="modal">
         <h2>{title}</h2>
-        <button className="close-modal" onClick={onClose}>
-          Cerrar
+        <button className="close-modal" onClick={onClose} title="Cerrar">
+          <i className="ti ti-x"></i>
         </button>
         <div className="filter-container">
           <input
