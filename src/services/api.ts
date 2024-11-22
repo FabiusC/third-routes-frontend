@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Crear una instancia de Axios con configuración base
 const api = axios.create({
-  baseURL: "http://54.92.168.48:3000/api/", // URL base del backend
+  baseURL: "http://ec2-18-208-198-40.compute-1.amazonaws.com:3000/api/", // URL base del backend
 });
 
 export const getThirdParties = async () => {
