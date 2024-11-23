@@ -59,7 +59,7 @@ const RoutesHistoryModal: React.FC<RoutesHistoryModalProps> = ({
         <div className="filter-container">
           <input
             type="text"
-            placeholder="Buscar por nombre o comentario"
+            placeholder="🔍 Nombre o comentario"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
           />

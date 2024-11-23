@@ -1,101 +1,150 @@
 .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7); /* Más oscuro para mejor contraste */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Más oscuro para mejor contraste */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
 .modal {
-    background: var(--card-background);
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    min-width: 80%;
-    width: 80% !important;
-    height: 80%;
-    color: var(--text-color);
+  background: var(--card-background);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  min-width: 80%;
+  width: 80% !important;
+  height: 80%;
+  color: var(--text-color);
 }
 
 .modal h2 {
-    margin-top: 0;
-    margin-bottom: 20px;
-    color: var(--text-color);
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: var(--text-color);
 }
 
 .modal-content {
-    flex: 1;
-    overflow-y: auto;
-    overflow-x: hidden;
-    margin-top: 10px;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-top: 10px;
 }
 
 .history-table {
-    width: 100%;
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 }
 
 .history-table th,
 .history-table td {
-    text-align: left;
-    padding: 10px;
-    border: 1px solid var(--line-color);
-    white-space: nowrap; /* Evita que las celdas se desborden */
+  text-align: left;
+  padding: 10px;
+  border: 1px solid var(--line-color);
+  white-space: nowrap; /* Evita que las celdas se desborden */
 }
 
 .history-table th {
-    background-color: var(--button-background);
-    color: var(--text-color);
-    font-weight: bold;
+  background-color: var(--button-background);
+  color: var(--text-color);
+  font-weight: bold;
 }
 
 .history-table tbody tr:nth-child(odd) {
-    background-color: var(--background-color);
+  background-color: var(--background-color);
 }
 
 .history-table tbody tr:nth-child(even) {
-    background-color: var(--card-background);
+  background-color: var(--card-background);
 }
 
 .history-table tbody tr:hover {
-    background-color: var(--button-hover);
-    color: var(--text-color);
+  background-color: var(--button-hover);
+  color: var(--text-color);
 }
 
 .filter-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    gap: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  gap: 10px;
 }
 
 .filter-container input,
 .filter-container select {
-    padding: 10px;
-    border: 1px solid var(--line-color);
-    border-radius: 4px;
-    background-color: var(--input-background);
-    color: var(--text-color);
+  padding: 10px;
+  border: 1px solid var(--line-color);
+  border-radius: 4px;
+  background-color: var(--input-background);
+  color: var(--text-color);
 }
 
 .close-modal {
-    background: var(--danger-button-background);
-    color: var(--text-color);
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    border-radius: 5px;
-    position: absolute;
-    top: 10px;
-    right: 10px;
+  background: var(--danger-button-background);
+  color: var(--text-color);
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 
 .close-modal:hover {
-    background: var(--danger-button-hover);
+  background: var(--danger-button-hover);
+}
+
+@media (max-width: 768px) {
+  .modal {
+    width: 90%; /* Reduce width for smaller screens */
+    height: auto; /* Adjust height to fit content */
+    max-height: 90%; /* Prevent overflow from exceeding the viewport */
+    padding: 15px; /* Smaller padding */
+    border-radius: 6px; /* Slightly reduce border radius */
+  }
+
+  .modal-content {
+    max-height: 60vh; /* Limit content height to fit within smaller screens */
+    overflow-y: auto; /* Enable vertical scrolling */
+  }
+
+  .modal h2 {
+    font-size: 1.2rem; /* Adjust heading size */
+  }
+
+  .filter-container {
+    flex-direction: row; /* Stack filters vertically */
+    align-items: stretch; /* Align filters to take full width */
+    gap: 5px; /* Reduce gap between inputs */
+  }
+
+  .filter-container input {
+    max-width: 50%;
+    font-size: 14px; /* Adjust font size */
+    padding: 8px; /* Adjust padding */
+  }
+
+  .close-modal {
+    font-size: 14px; /* Reduce font size */
+    padding: 8px 12px; /* Adjust padding */
+    top: 5px; /* Adjust position */
+    right: 5px; /* Adjust position */
+  }
+
+  .history-table th,
+  .history-table td {
+    font-size: 12px; /* Reduce table font size for better fit */
+    padding: 8px; /* Adjust padding */
+  }
+
+  .history-table {
+    display: block; /* Make the table scrollable */
+    overflow-x: auto; /* Enable horizontal scrolling for tables */
+  }
 }
