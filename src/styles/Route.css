@@ -107,3 +107,63 @@
   background-color: var(--danger-button-hover);
   transform: scale(1.1);
 }
+
+@media (max-width: 768px) {
+  .Route {
+    width: 100%; /* Full width */
+    height: 50vh; /* Adjust height dynamically */
+  }
+
+  .route-header {
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+  }
+
+  .route-header button {
+    padding: 8px;
+    font-size: 12px; /* Smaller font size */
+    width: 100%; /* Take full width */
+    text-align: center;
+  }
+
+  .route-list {
+    display: flex;
+    flex-direction: row; /* Stack cards vertically */
+    gap: 10px; /* Add spacing between cards */
+    overflow-x: auto; /* Avoid horizontal scroll */
+    overflow-y: hidden; /* Hide vertical scroll */
+    width: 100%;
+    padding-bottom: 0; /* Remove extra padding */
+  }
+
+  .route-card {
+    flex-direction: column; /* Allow cards to resize */
+    height: 100%;
+    min-width: 70%; /* Full width */
+    border-radius: 5px;
+    border: 1px solid var(--line-color);
+    box-sizing: border-box; /* Ensure cards fit within boundaries */
+  }
+
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    font-size: small;
+    gap: 0px;
+  }
+
+  .comment-box {
+    font-size: 0.9em;
+    width: 90%; /* Ensure full width */
+  }
+
+  .btn-close {
+    top: 10px;
+    right: 10px;
+    padding: 6px;
+    font-size: 0.8em;
+  }
+}

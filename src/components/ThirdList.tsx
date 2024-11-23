@@ -114,54 +114,62 @@ const ThirdList: React.FC<ThirdListProps> = ({
           }}
           className="btn-icon"
         >
-          <i className="ti ti-backspace" ></i>
+          <i className="ti ti-backspace"></i>
           <img src="" />
         </button>
         <button onClick={openHistoryModal} className="btn-icon">
-          <i className="ti ti-history" ></i>
+          <i className="ti ti-history"></i>
         </button>
         <button onClick={() => setAddModalOpen(true)} className="btn-icon">
-          <i className="ti ti-mood-plus" ></i>
+          <i className="ti ti-mood-plus"></i>
         </button>
       </div>
       <hr className="hr-line" />
       <ul className="third-party-list">
-        {thirdParties
-          .filter(
-            (tp) =>
-              tp.name.toLowerCase().includes(search.toLowerCase()) &&
-              (category === "all" || tp.category === category)
-          )
-          .map((tp) => (
-            <li
-              key={tp.id}
-              className="third-party-card"
-              onClick={() => addToRoute(tp)}
-            >
-              <div className="card-content">
-                <p className="name">
-                  <strong>{tp.name}</strong>
-                </p>
-                <p className="address">Direccion: {tp.address}</p>
-                <p className="contact-name">
-                  Nombre: {tp.contact_name || "N/A"}
-                </p>
-                <p className="contact-info">
-                  Número: {tp.contact_info || "N/A"}
-                </p>
-                <p className="category">
-                  {tp.category === "vendor" ? "Proveedor" : "Cliente"}
-                </p>
-              </div>
-              <button
-                className="button btn-edit btn-icon"
-                onClick={(e) => openEditModal(tp, e)}
-                aria-label={`Editar ${tp.name}`}
+        {thirdParties.filter(
+          (tp) =>
+            tp.name.toLowerCase().includes(search.toLowerCase()) &&
+            (category === "all" || tp.category === category)
+        ).length === 0 ? (
+          <p className="empty-message">El Tercero NO Existe.</p>
+        ) : (
+          thirdParties
+            .filter(
+              (tp) =>
+                tp.name.toLowerCase().includes(search.toLowerCase()) &&
+                (category === "all" || tp.category === category)
+            )
+            .map((tp) => (
+              <li
+                key={tp.id}
+                className="third-party-card"
+                onClick={() => addToRoute(tp)}
               >
-                <i className="ti ti-edit"></i>
-              </button>
-            </li>
-          ))}
+                <div className="card-content">
+                  <p className="name">
+                    <strong>{tp.name}</strong>
+                  </p>
+                  <p className="address">Direccion: {tp.address}</p>
+                  <p className="contact-name">
+                    Nombre: {tp.contact_name || "N/A"}
+                  </p>
+                  <p className="contact-info">
+                    Número: {tp.contact_info || "N/A"}
+                  </p>
+                  <p className="category">
+                    {tp.category === "vendor" ? "Proveedor" : "Cliente"}
+                  </p>
+                </div>
+                <button
+                  className="button btn-edit btn-icon"
+                  onClick={(e) => openEditModal(tp, e)}
+                  aria-label={`Editar ${tp.name}`}
+                >
+                  <i className="ti ti-edit"></i>
+                </button>
+              </li>
+            ))
+        )}
       </ul>
 
       <RoutesHistoryModal

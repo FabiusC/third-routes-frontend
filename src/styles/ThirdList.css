@@ -108,3 +108,72 @@
   border-top: 1px solid var(--line-color);
   margin: 15px 0;
 }
+
+.empty-message {
+  text-align: center;
+  font-size: 16px;
+  color: gray;
+  margin: 20px 0;
+}
+
+@media (max-width: 768px) {
+  .ThirdList {
+    width: 100%; /* Take full width */
+    height: auto; /* Adjust height dynamically */
+  }
+
+  .search-container {
+    flex-direction: row; /* Stack elements vertically */
+    gap: 5px;
+    align-items: stretch; /* Ensure items stretch to fit */
+    width: 100%;
+  }
+
+  .search-container input,
+  .search-container select {
+    font-size: 12px;
+    flex: none; /* Allow elements to resize */
+    width: 30%; /* Inputs take full width */
+  }
+
+  .search-container button {
+    padding: 8px;
+    font-size: 12px; /* Smaller font size for buttons */
+    width: 100%; /* Take full width */
+  }
+
+  .third-party-list {
+    display: flex;
+    flex-direction: row; /* Stack cards vertically */
+    height: 30vh;
+    gap: 10px;
+    overflow-x: auto; /* Avoid horizontal scroll */
+    overflow-y: hidden; /* Hide vertical scroll */
+  }
+
+  .third-party-card {
+    display: flex; /* Allow cards to stretch */
+    flex-direction: column;
+    gap: 5px;
+    min-width: 70%; /* Cards take full width */
+    height: 100%; /* Adjust height dynamically */
+    padding: 10px;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: small;
+    gap: 0px;
+  }
+
+  .empty-message {
+    text-align: center;
+    font-size: 16px;
+    color: gray;
+    margin: 20px 0;
+  }
+}
