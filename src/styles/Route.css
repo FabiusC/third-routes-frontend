@@ -108,6 +108,35 @@
   transform: scale(1.1);
 }
 
+.date-input {
+  width: 100%; /* Full width of the container */
+  padding: 8px; /* Padding inside the input */
+  margin-top: 5px; /* Space above the input */
+  margin-bottom: 10px; /* Space below the input */
+  font-size: 1em; /* Adjust the font size for readability */
+  color: var(--text-color); /* Text color to match the theme */
+  background-color: var(
+    --input-background
+  ); /* Background color to match the theme */
+  border: 1px solid var(--line-color); /* Border color to match the design */
+  border-radius: 5px; /* Rounded corners for a smooth look */
+  box-sizing: border-box; /* Include padding in width/height calculation */
+  transition: all 0.3s ease; /* Smooth transition for hover/focus effects */
+}
+
+.date-input:focus {
+  outline: none; /* Remove the default outline */
+  border-color: var(--primary-color); /* Highlight border on focus */
+  box-shadow: 0 0 5px var(--primary-color); /* Add a subtle glow */
+  background-color: var(
+    --input-focus-background
+  ); /* Optional: Slightly lighter background on focus */
+}
+
+.date-input:hover {
+  border-color: var(--primary-color); /* Highlight border on hover */
+}
+
 @media (max-width: 768px) {
   .Route {
     width: 100%; /* Full width */

@@ -6,8 +6,11 @@ import { jsPDF } from "jspdf";
 interface RouteProps {
   routeList: ThirdParty[];
   removeFromRoute: (thirdParty: ThirdParty) => void;
-  saveRoute: (comments: { [id: number]: string }) => void;
-  getColombianDate: () => string; // Recibe la función como prop
+  saveRoute: (
+    comments: { [id: number]: string },
+    dates: { [id: number]: string }
+  ) => void;
+  getColombianDate: () => string;
 }
 
 const Route: React.FC<RouteProps> = ({
@@ -16,10 +19,12 @@ const Route: React.FC<RouteProps> = ({
   saveRoute,
   getColombianDate,
 }) => {
-  // Estado local para gestionar los comentarios
+  // State for managing comments
   const [comments, setComments] = useState<{ [id: number]: string }>({});
+  // State for managing dates
+  const [dates, setDates] = useState<{ [id: number]: string }>({});
 
-  // Manejar cambios en los comentarios
+  // Handle changes in comments
   const handleCommentChange = (id: number, value: string) => {
     setComments((prev) => ({
       ...prev,
@@ -27,77 +32,109 @@ const Route: React.FC<RouteProps> = ({
     }));
   };
 
-  // Función para generar y descargar el PDF
+  // Handle changes in dates
+  const handleDateChange = (id: number, value: string) => {
+    setDates((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+  };
+
+  // Function to generate and download the PDF
   const downloadPDF = () => {
     const doc = new jsPDF();
 
-    // Obtener la fecha en formato colombiano
+    // Get today's date in Colombian format
     const routeDate = new Date(getColombianDate());
     const formattedDate = new Intl.DateTimeFormat("es-ES", {
       day: "2-digit",
       month: "short",
       year: "numeric",
-    }).format(routeDate); // Formato: DD-MMM-YYYY (ejemplo: 10-Nov-2024)
+    }).format(routeDate);
 
-    // Título y Fecha
+    // Title and Date
     doc.setFontSize(18);
-    doc.text("RUTA", 105, 10, { align: "center" }); // Centrar el título
+    doc.text("RUTA", 105, 10, { align: "center" });
     doc.setFontSize(12);
-    doc.text(`Fecha: ${formattedDate}`, 10, 20); // Mostrar la fecha formateada
-    doc.line(10, 25, 200, 25); // Línea separadora debajo de la fecha
+    doc.text(`Fecha: ${formattedDate}`, 10, 20);
+    doc.line(10, 25, 200, 25);
 
-    // Agregar la información de los terceros
-    let y = 30; // Coordenada Y inicial
+    // Add information for each third party
+    let y = 30;
     routeList.forEach((tp, index) => {
       if (y > 280) {
-        // Salto de página si se excede el espacio
         doc.addPage();
         y = 10;
       }
 
-      // Número e Información del Tercero
+      const date = dates[tp.id] || formattedDate; // Use the entered date or today's date
+
       doc.setFontSize(14);
       doc.setFont("helvetica", "bold");
       doc.text(`${index + 1}. ${tp.name}`, 10, y);
       y += 8;
 
-      // Dirección
       doc.setFontSize(12);
       doc.setFont("helvetica", "normal");
+      doc.text(`Fecha: ${date}`, 10, y); // Display the date
+      y += 8;
+
       doc.text(`Dirección: ${tp.address || "N/A"}`, 10, y);
       y += 8;
 
-      // Nombre de Contacto
       doc.text(`Nombre de Contacto: ${tp.contact_name || "N/A"}`, 10, y);
       y += 8;
 
-      // Información de Contacto
       doc.text(`Contacto: ${tp.contact_info || "N/A"}`, 10, y);
       y += 8;
 
-      // Comentario
       doc.text(`Comentario: ${comments[tp.id] || "Sin comentario"}`, 10, y);
       y += 8;
 
-      // Línea separadora
       doc.line(10, y, 200, y);
       y += 10;
     });
 
-    // Descargar el PDF con el nombre generado
-    const fileName = `Ruta_${formattedDate.replace(/ /g, "_")}.pdf`; // Reemplazar espacios por guiones bajos en el nombre del archivo
+    const fileName = `Ruta_${formattedDate.replace(/ /g, "_")}.pdf`;
     doc.save(fileName);
   };
 
+  // Function to save the Route in DB
   const handleSave = () => {
-    // Validar que cada tercero tenga un comentario
+    const adjustToColombianDate = (dateString: string) => {
+      const [year, month, day] = dateString.split("-").map(Number); // Extract year, month, day
+      const colombianDate = new Date(year, month - 1, day); // Create a date in Colombia's timezone context
+      console.log("Colombian date preserved:", colombianDate.toISOString());
+      return colombianDate.toISOString().split("T")[0]; // Return raw YYYY-MM-DD
+    };
+
+    // Validate comments
     const updatedComments = routeList.reduce((acc, tp) => {
-      acc[tp.id] = comments[tp.id] || "Sin comentario"; // Agregar "Sin comentario" si está vacío
+      acc[tp.id] = comments[tp.id] || "Sin comentario";
       return acc;
     }, {} as { [id: number]: string });
 
-    // Llamar a la función saveRoute con los comentarios actualizados
-    saveRoute(updatedComments);
+    // Validate and adjust dates
+    const updatedDates = routeList.reduce((acc, tp) => {
+      if (dates[tp.id]) {
+        acc[tp.id] = adjustToColombianDate(dates[tp.id]); // Adjust date to Colombian timezone
+      } else {
+        acc[tp.id] = adjustToColombianDate(getColombianDate()); // Default to today's date in Colombian time
+      }
+      return acc;
+    }, {} as { [id: number]: string });
+
+    // Ensure all dates are present, warn if missing
+    const hasMissingDates = routeList.some((tp) => !updatedDates[tp.id]);
+    if (hasMissingDates) {
+      alert(
+        "Algunas rutas no tienen fecha especificada. Por favor, verifica antes de guardar."
+      );
+      return;
+    }
+
+    // Save comments and dates
+    saveRoute(updatedComments, updatedDates);
   };
 
   return (
@@ -131,19 +168,24 @@ const Route: React.FC<RouteProps> = ({
             onClick={() => removeFromRoute(tp)}
             title="Eliminar"
           >
-            <div
-              className="card-content"
-            >
+            <div className="card-content">
               <p>
                 <strong>{tp.name}</strong>
               </p>
               <p>{tp.address}</p>
+              <input
+                type="date"
+                className="date-input"
+                value={dates[tp.id] || ""}
+                onChange={(e) => handleDateChange(tp.id, e.target.value)}
+                onClick={(e) => e.stopPropagation()} // Prevent removing the card
+              />
               <textarea
                 className="comment-box"
                 placeholder="Agregar comentario"
-                value={comments[tp.id] || ""} // Muestra el comentario si existe, o vacío si no
-                onChange={(e) => handleCommentChange(tp.id, e.target.value)} // Actualiza el comentario
-                onClick={(e) => e.stopPropagation()} // Evita que el clic en el área de texto elimine la tarjeta
+                value={comments[tp.id] || ""}
+                onChange={(e) => handleCommentChange(tp.id, e.target.value)}
+                onClick={(e) => e.stopPropagation()}
               />
             </div>
           </li>

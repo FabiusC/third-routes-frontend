@@ -11,9 +11,11 @@ export const getThirdParties = async () => {
 };
 
 export const addRoute = async (data: {
-  route_date: string;
-  third_party_ids: number[];
-  comments: string[];
+  routes: {
+    route_date: string;
+    third_party_id: number;
+    comment: string;
+  }[];
 }) => {
   const response = await api.post("/add-route", data);
   return response.data;

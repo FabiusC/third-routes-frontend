@@ -26,14 +26,13 @@ const RoutesHistoryModal: React.FC<RoutesHistoryModalProps> = ({
   const [searchText, setSearchText] = useState("");
   const [searchDate, setSearchDate] = useState("");
 
-  // Formatear la fecha a DD-MM-YYYY
+  // Format the date as DD-MM-YYYY without timezone conversion
   const formatDate = (isoDate: string): string => {
-    const date = new Date(isoDate);
-    return date.toLocaleDateString("es-ES", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
+    // Split the ISO date string (e.g., "2024-10-31T00:00:00.000Z") to extract the date part
+    const [year, month, day] = isoDate.split("T")[0].split("-");
+
+    // Return the formatted date as DD-MM-YYYY
+    return `${day}/${month}/${year}`;
   };
 
   // Filtrar los datos según el criterio de búsqueda
@@ -86,7 +85,7 @@ const RoutesHistoryModal: React.FC<RoutesHistoryModalProps> = ({
                   <tr key={index}>
                     <td>{formatDate(route.route_date)}</td>
                     <td>{route.third_party_name}</td>
-                    <td>{route.address}</td>
+                    <td>{route.address || "N/A"}</td>
                     <td>
                       {route.contact_name || "N/A"} -{" "}
                       {route.contact_info || "N/A"}

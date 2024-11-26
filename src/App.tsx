@@ -61,35 +61,29 @@ const App: React.FC = () => {
   };
 
   // Guardar la ruta en la base de datos
-  const saveRouteToDatabase = async (comments: { [id: number]: string }) => {
+  const saveRouteToDatabase = async (
+    comments: { [id: number]: string },
+    dates: { [id: number]: string }
+  ) => {
     if (routeList.length === 0) {
       alert("No hay terceros en la ruta para guardar.");
       return;
     }
 
     try {
-      const routeDate = getColombianDate(); // Obtén la fecha en la zona horaria de Colombia
-      const thirdPartyIds = routeList.map((tp) => tp.id);
+      // Construct the "routes" array to match the backend format
+      const routes = routeList.map((tp) => ({
+        third_party_id: tp.id,
+        route_date: dates[tp.id], // Use the date from input as is
+        comment: comments[tp.id] || "Sin comentarios", // Use provided comment or default
+      }));
 
-      // Generar comentarios utilizando los valores del estado `comments`
-      const generatedComments = routeList.map(
-        (tp) => comments[tp.id] || "Sin comentarios"
-      );
-
-      console.log("Enviando datos al backend:", {
-        route_date: routeDate,
-        third_party_ids: thirdPartyIds,
-        comments: generatedComments,
-      });
-
-      // Llamada a la API para guardar la ruta
-      await addRoute({
-        route_date: routeDate,
-        third_party_ids: thirdPartyIds,
-        comments: generatedComments,
-      });
+      // Call the API to save the route
+      await addRoute({ routes });
 
       alert("Ruta guardada correctamente.");
+
+      // Optionally reset the local state or update the UI
       setThirdParties((prevThirdParties) => [
         ...prevThirdParties,
         ...routeList,
