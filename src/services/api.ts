@@ -5,11 +5,13 @@ const api = axios.create({
   baseURL: "http://44.201.141.250:3000/api/", // URL base del backend
 });
 
+// Función para obtener los terceros
 export const getThirdParties = async () => {
   const response = await api.get("/third-parties");
   return response.data; // Devuelve los terceros desde la API
 };
 
+// Agregar Ruta
 export const addRoute = async (data: {
   routes: {
     route_date: string;
@@ -21,8 +23,21 @@ export const addRoute = async (data: {
   return response.data;
 };
 
+// Eliminar Ruta
+export const deleteRoute = async (id: number) => {
+  const response = await api.delete(`/route/${id}`);
+  return response.data;
+};
+
+// Obtener historial de Rutas
 export const getRoutesHistory = async () => {
   const response = await api.get("/routes-history");
+  return response.data;
+};
+
+// Obtener rutas de hoy
+export const getTodayRoutes = async () => {
+  const response = await api.get("/routes/today");
   return response.data;
 };
 

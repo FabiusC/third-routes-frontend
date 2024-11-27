@@ -2,49 +2,65 @@ import React, { useState } from "react";
 import "../styles/RoutesHistoryModal.css";
 
 interface RouteHistory {
-  route_date: string; // Se espera en formato ISO (YYYY-MM-DDTHH:mm:ss)
+  route_date: string;
   third_party_name: string;
   address: string;
   contact_name?: string;
   contact_info?: string;
   comment: string;
+  route_id: number;
 }
 
 interface RoutesHistoryModalProps {
   isOpen: boolean;
   title: string;
   onClose: () => void;
-  routesHistory: RouteHistory[]; // Este prop debe ser siempre un array
+  routesHistory: RouteHistory[];
+  deleteRoute: (id: number) => Promise<void>;
 }
 
 const RoutesHistoryModal: React.FC<RoutesHistoryModalProps> = ({
   isOpen,
   title,
   onClose,
-  routesHistory = [], // Si no se pasa, asegura que sea un array vacío
+  routesHistory,
+  deleteRoute,
 }) => {
   const [searchText, setSearchText] = useState("");
   const [searchDate, setSearchDate] = useState("");
 
   // Format the date as DD-MM-YYYY without timezone conversion
   const formatDate = (isoDate: string): string => {
-    // Split the ISO date string (e.g., "2024-10-31T00:00:00.000Z") to extract the date part
     const [year, month, day] = isoDate.split("T")[0].split("-");
-
-    // Return the formatted date as DD-MM-YYYY
     return `${day}/${month}/${year}`;
   };
 
-  // Filtrar los datos según el criterio de búsqueda
+  // Filter routes based on search criteria
   const filteredRoutes = routesHistory.filter((route) => {
     const matchesText =
       route.third_party_name.toLowerCase().includes(searchText.toLowerCase()) ||
       route.comment.toLowerCase().includes(searchText.toLowerCase());
     const matchesDate = searchDate
       ? route.route_date.startsWith(searchDate)
-      : true; // Si no se selecciona fecha, incluir todos
+      : true;
     return matchesText && matchesDate;
   });
+
+  // Handle delete button click
+  const handleDelete = async (route_id: number) => {
+    if (!route_id) {
+      alert("No se pudo eliminar la ruta debido a un ID faltante.");
+      return;
+    }
+    try {
+      if (window.confirm("¿Estás seguro de que deseas eliminar esta ruta?")) {
+        await deleteRoute(route_id);
+      }
+    } catch (error) {
+      console.error("Error al eliminar la ruta:", error);
+      alert("No se pudo eliminar la ruta. Por favor, inténtalo de nuevo.");
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -77,12 +93,13 @@ const RoutesHistoryModal: React.FC<RoutesHistoryModalProps> = ({
                 <th>Dirección</th>
                 <th>Contacto</th>
                 <th>Comentario</th>
+                <th>🗑️</th>
               </tr>
             </thead>
             <tbody>
               {filteredRoutes.length > 0 ? (
-                filteredRoutes.map((route, index) => (
-                  <tr key={index}>
+                filteredRoutes.map((route) => (
+                  <tr key={route.route_id}>
                     <td>{formatDate(route.route_date)}</td>
                     <td>{route.third_party_name}</td>
                     <td>{route.address || "N/A"}</td>
@@ -91,11 +108,20 @@ const RoutesHistoryModal: React.FC<RoutesHistoryModalProps> = ({
                       {route.contact_info || "N/A"}
                     </td>
                     <td>{route.comment}</td>
+                    <td>
+                      <button
+                        onClick={() => handleDelete(route.route_id)}
+                        className="button btn-danger"
+                        title="Eliminar"
+                      >
+                        🗑️
+                      </button>
+                    </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan={5} style={{ textAlign: "center" }}>
+                  <td colSpan={6} style={{ textAlign: "center" }}>
                     No se encontraron resultados.
                   </td>
                 </tr>

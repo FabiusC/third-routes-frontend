@@ -9,6 +9,7 @@ import {
   addThirdParty,
   updateThirdParty,
   deleteThirdParty,
+  deleteRoute,
 } from "../services/api";
 
 const ThirdList: React.FC<ThirdListProps> = ({
@@ -26,16 +27,18 @@ const ThirdList: React.FC<ThirdListProps> = ({
   const [selectedThirdParty, setSelectedThirdParty] = useState<any>(null);
   const [routesHistory, setRoutesHistory] = useState<RouteHistory[]>([]);
 
+  // Open the Routes History Modal
   const openHistoryModal = async () => {
-    try {
-      const data = await getRoutesHistory();
-      setRoutesHistory(data);
-      setHistoryModalOpen(true);
-    } catch (err) {
-      console.error("Error al cargar el histórico de rutas:", err);
-    }
-  };
+  try {
+    const data = await getRoutesHistory(); // API call returns updated fields
+    setRoutesHistory(data); // Directly set the data to state
+    setHistoryModalOpen(true);
+  } catch (err) {
+    console.error("Error al cargar el histórico de rutas:", err);
+  }
+};
 
+  // Add a Third Party
   const handleAddThirdParty = async (newThirdParty: {
     name: string;
     address: string;
@@ -46,12 +49,14 @@ const ThirdList: React.FC<ThirdListProps> = ({
     try {
       await addThirdParty(newThirdParty);
       refreshThirdParties();
+      alert("Tercero agregado correctamente.");
     } catch (err) {
-      console.error("Error al agregar tercero:", err);
+      console.error("Error agregando tercero:", err);
+      alert("Error agregando tercero.");
     }
   };
 
-  // Editar Tercero
+  // Edit a Third Party
   const handleEditThirdParty = async (updatedThirdParty: {
     id: number;
     name: string;
@@ -62,33 +67,49 @@ const ThirdList: React.FC<ThirdListProps> = ({
   }) => {
     try {
       await updateThirdParty(updatedThirdParty);
-      // Vaciar la lista de rutas
-      setRouteList([]);
-      // Refrescar la lista principal de terceros
-      refreshThirdParties();
+      setRouteList([]); // Clear route list
+      refreshThirdParties(); // Refresh third parties list
+      alert("Tercero actualizado correctamente.");
     } catch (err) {
-      console.error("Error al editar tercero:", err);
+      console.error("Error editando el tercero:", err);
+      alert("Erro al actualizar el tercero.");
     }
   };
 
-  // Eliminar Tercero
+  // Delete a Third Party
   const handleDeleteThirdParty = async (id: number) => {
     try {
-      await deleteThirdParty(id); // Llama a la función de la API para eliminar
-      refreshThirdParties(); // Refresca la lista después de eliminar
-      setRouteList([]); // Limpia la lista de rutas si el tercero eliminado está en ella
+      await deleteThirdParty(id);
+      refreshThirdParties();
+      setRouteList([]);
+      alert(`Tercero eliminado correctamente.`);
     } catch (err) {
-      console.error("Error al eliminar tercero:", err);
+      console.error("Error deleting third party:", err);
+      alert("Error al eliminar el tercero: ");
     }
   };
 
-  // Abrir modal de edición
+  // Delete a Route
+  const handleDeleteRoute = async (id: number) => {
+    try {
+      await deleteRoute(id);
+      setRoutesHistory((prevHistory) =>
+        prevHistory.filter((route) => route.route_id !== id)
+      );
+      alert("Ruta eliminada correctamente.");
+    } catch (err) {
+      console.error("Error eliminando ruta:", err);
+      alert("Error al eliminar ruta.");
+    }
+  };
+
+  // Open Edit Modal for a Third Party
   const openEditModal = (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     thirdParty: any,
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
-    event.stopPropagation(); // Detener la propagación del evento
+    event.stopPropagation(); // Prevent the event from bubbling up
     setSelectedThirdParty(thirdParty);
     setEditModalOpen(true);
   };
@@ -115,7 +136,6 @@ const ThirdList: React.FC<ThirdListProps> = ({
           className="btn-icon"
         >
           <i className="ti ti-backspace"></i>
-          <img src="" />
         </button>
         <button onClick={openHistoryModal} className="btn-icon">
           <i className="ti ti-history"></i>
@@ -149,7 +169,7 @@ const ThirdList: React.FC<ThirdListProps> = ({
                   <p className="name">
                     <strong>{tp.name}</strong>
                   </p>
-                  <p className="address">Direccion: {tp.address}</p>
+                  <p className="address">Dirección: {tp.address}</p>
                   <p className="contact-name">
                     Nombre: {tp.contact_name || "N/A"}
                   </p>
@@ -177,6 +197,7 @@ const ThirdList: React.FC<ThirdListProps> = ({
         title="Histórico de Rutas"
         onClose={() => setHistoryModalOpen(false)}
         routesHistory={routesHistory}
+        deleteRoute={handleDeleteRoute} // Pass deleteRoute method
       />
 
       <AddThirdModal

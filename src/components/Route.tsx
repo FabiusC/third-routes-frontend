@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import "../styles/Route.css";
-import { ThirdParty } from "../types/Types";
+import { RouteHistory, ThirdParty } from "../types/Types";
 import { jsPDF } from "jspdf";
+import TodayRouteModal from "./TodayRouteModal";
+import { getTodayRoutes } from "../services/api";
 
 interface RouteProps {
   routeList: ThirdParty[];
@@ -23,6 +25,9 @@ const Route: React.FC<RouteProps> = ({
   const [comments, setComments] = useState<{ [id: number]: string }>({});
   // State for managing dates
   const [dates, setDates] = useState<{ [id: number]: string }>({});
+  // State for managing the TodayRouteModal
+  const [isTodayRouteOpen, setIsTodayRouteOpen] = useState(false);
+  const [todayRoutes, setTodayRoutes] = useState<RouteHistory[]>([]);
 
   // Handle changes in comments
   const handleCommentChange = (id: number, value: string) => {
@@ -137,6 +142,17 @@ const Route: React.FC<RouteProps> = ({
     saveRoute(updatedComments, updatedDates);
   };
 
+  const fetchTodayRoutes = async () => {
+    try {
+      const routes = await getTodayRoutes();
+      setTodayRoutes(routes);
+      setIsTodayRouteOpen(true);
+    } catch (err) {
+      console.error("Error fetching today's routes:", err);
+      alert("Error al obtener la ruta de hoy.");
+    }
+  };
+
   return (
     <div className="Route">
       <div className="route-header">
@@ -156,6 +172,13 @@ const Route: React.FC<RouteProps> = ({
             title="Imprimir"
           >
             <i className="ti ti-file-download"></i>
+          </button>
+          <button
+            onClick={fetchTodayRoutes}
+            className="button btn-icon"
+            title="Ruta de Hoy"
+          >
+            <i className="ti ti-calendar"></i>
           </button>
         </div>
       </div>
@@ -191,6 +214,11 @@ const Route: React.FC<RouteProps> = ({
           </li>
         ))}
       </ul>
+      <TodayRouteModal
+        isOpen={isTodayRouteOpen}
+        onClose={() => setIsTodayRouteOpen(false)}
+        routes={todayRoutes}
+      />
     </div>
   );
 };

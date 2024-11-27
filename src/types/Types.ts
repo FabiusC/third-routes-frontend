@@ -15,6 +15,7 @@ export interface ThirdListProps {
 }
 
 export interface RouteHistory {
+  route_id: number; // Updated to match the backend field name
   route_date: string;
   third_party_name: string;
   address: string;
