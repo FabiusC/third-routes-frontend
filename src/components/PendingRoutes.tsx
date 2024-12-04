@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getRoutesHistory, updateRoute } from "../services/api"; // Suponiendo que ya tienes un método para el PUT request
@@ -65,6 +64,7 @@ const PendingRoutes: React.FC = () => {
       setPendingRoutes((prevRoutes) =>
         prevRoutes.filter((route) => route.route_id !== routeId)
       );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error("Error marking route as finished:", err.message || err);
       alert(
