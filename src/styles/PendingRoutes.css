@@ -1,0 +1,143 @@
+.PendingRoutes {
+    padding: 20px;
+    width: 100%;
+    font-family: Arial, sans-serif;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.date-filter {
+    padding: 10px;
+    border: 1px solid #ddd;
+    width: auto !important;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.back-button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.back-button:hover {
+    background-color: #0056b3;
+}
+
+.route-list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0px;
+}
+
+.route-content {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    width: 100%;
+}
+
+.route-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+    width: 100%;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease-in-out;
+    background-color: var(--background-color);
+}
+
+.route-item:hover {
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.observation-box {
+    width: 100%;
+    min-height: 60px;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.mark-done-button {
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    align-self: flex-end;
+    /* Align the button to the right within the card */
+}
+
+.mark-done-button:hover {
+    background-color: #218838;
+}
+
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        /* Acomoda el header en columnas */
+        align-items: center;
+        gap: 10px;
+    }
+
+    h2 {
+        text-align: center;
+        /* Centra el título */
+    }
+
+    .route-item,
+    .comment-box {
+        flex-direction: column;
+        gap: 0;
+        width: 100%;
+        /* Tarjetas ocupan todo el ancho en pantallas pequeñas */
+    }
+
+    .route-content p {
+        align-items: start;
+        margin: 5px;
+    }
+
+    .route-actions,
+    .mark-done-button {
+        width: 100%;
+        /* Botón ocupa todo el ancho */
+    }
+
+    .date-filter {
+        width: 50%;
+        /* Filtros y botón ocupan todo el ancho */
+    }
+
+    .back-button {
+        width: 20%;
+        /* Filtros y botón ocupan todo el ancho */
+        align-self: start;
+    }
+}

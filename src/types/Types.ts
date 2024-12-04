@@ -15,11 +15,14 @@ export interface ThirdListProps {
 }
 
 export interface RouteHistory {
-  route_id: number; // Updated to match the backend field name
+  route_id: number;
   route_date: string;
+  third_party_id: number;
   third_party_name: string;
   address: string;
   contact_name?: string;
   contact_info?: string;
   comment: string;
+  is_finished: boolean;
+  observations: string;
 }

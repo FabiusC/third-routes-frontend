@@ -1,9 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/Route.css";
-import { RouteHistory, ThirdParty } from "../types/Types";
+import { ThirdParty } from "../types/Types";
 import { jsPDF } from "jspdf";
-import TodayRouteModal from "./TodayRouteModal";
-import { getTodayRoutes } from "../services/api";
+import { getRoutesHistory } from "../services/api";
 
 interface RouteProps {
   routeList: ThirdParty[];
@@ -25,9 +25,12 @@ const Route: React.FC<RouteProps> = ({
   const [comments, setComments] = useState<{ [id: number]: string }>({});
   // State for managing dates
   const [dates, setDates] = useState<{ [id: number]: string }>({});
-  // State for managing the TodayRouteModal
-  const [isTodayRouteOpen, setIsTodayRouteOpen] = useState(false);
-  const [todayRoutes, setTodayRoutes] = useState<RouteHistory[]>([]);
+  // State for managing pending routes
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [pendingRoutes, setPendingRoutes] = useState<ThirdParty[]>([]);
+
+  // Hook to navigate to another page
+  const navigate = useNavigate();
 
   // Handle changes in comments
   const handleCommentChange = (id: number, value: string) => {
@@ -107,29 +110,25 @@ const Route: React.FC<RouteProps> = ({
   // Function to save the Route in DB
   const handleSave = () => {
     const adjustToColombianDate = (dateString: string) => {
-      const [year, month, day] = dateString.split("-").map(Number); // Extract year, month, day
-      const colombianDate = new Date(year, month - 1, day); // Create a date in Colombia's timezone context
-      console.log("Colombian date preserved:", colombianDate.toISOString());
-      return colombianDate.toISOString().split("T")[0]; // Return raw YYYY-MM-DD
+      const [year, month, day] = dateString.split("-").map(Number);
+      const colombianDate = new Date(year, month - 1, day);
+      return colombianDate.toISOString().split("T")[0];
     };
 
-    // Validate comments
     const updatedComments = routeList.reduce((acc, tp) => {
       acc[tp.id] = comments[tp.id] || "Sin comentario";
       return acc;
     }, {} as { [id: number]: string });
 
-    // Validate and adjust dates
     const updatedDates = routeList.reduce((acc, tp) => {
       if (dates[tp.id]) {
-        acc[tp.id] = adjustToColombianDate(dates[tp.id]); // Adjust date to Colombian timezone
+        acc[tp.id] = adjustToColombianDate(dates[tp.id]);
       } else {
-        acc[tp.id] = adjustToColombianDate(getColombianDate()); // Default to today's date in Colombian time
+        acc[tp.id] = adjustToColombianDate(getColombianDate());
       }
       return acc;
     }, {} as { [id: number]: string });
 
-    // Ensure all dates are present, warn if missing
     const hasMissingDates = routeList.some((tp) => !updatedDates[tp.id]);
     if (hasMissingDates) {
       alert(
@@ -138,18 +137,20 @@ const Route: React.FC<RouteProps> = ({
       return;
     }
 
-    // Save comments and dates
     saveRoute(updatedComments, updatedDates);
   };
 
-  const fetchTodayRoutes = async () => {
+  const fetchPendingRoutes = async () => {
     try {
-      const routes = await getTodayRoutes();
-      setTodayRoutes(routes);
-      setIsTodayRouteOpen(true);
+      const routes = await getRoutesHistory(); // Llama a la API para obtener todas las rutas
+      const pendingRoutes = routes.filter(
+        (route: { is_finished: boolean }) => !route.is_finished
+      ); // Filtrar rutas pendientes
+      setPendingRoutes(pendingRoutes); // Actualizar el estado con las rutas pendientes
+      navigate("/pending-routes"); // Redirigir a la página de rutas pendientes
     } catch (err) {
-      console.error("Error fetching today's routes:", err);
-      alert("Error al obtener la ruta de hoy.");
+      console.error("Error fetching pending routes:", err);
+      alert("Error al obtener las rutas pendientes.");
     }
   };
 
@@ -174,9 +175,9 @@ const Route: React.FC<RouteProps> = ({
             <i className="ti ti-file-download"></i>
           </button>
           <button
-            onClick={fetchTodayRoutes}
+            onClick={fetchPendingRoutes}
             className="button btn-icon"
-            title="Ruta de Hoy"
+            title="Rutas Pendientes"
           >
             <i className="ti ti-calendar"></i>
           </button>
@@ -201,7 +202,7 @@ const Route: React.FC<RouteProps> = ({
                 className="date-input"
                 value={dates[tp.id] || ""}
                 onChange={(e) => handleDateChange(tp.id, e.target.value)}
-                onClick={(e) => e.stopPropagation()} // Prevent removing the card
+                onClick={(e) => e.stopPropagation()}
               />
               <textarea
                 className="comment-box"
@@ -214,11 +215,6 @@ const Route: React.FC<RouteProps> = ({
           </li>
         ))}
       </ul>
-      <TodayRouteModal
-        isOpen={isTodayRouteOpen}
-        onClose={() => setIsTodayRouteOpen(false)}
-        routes={todayRoutes}
-      />
     </div>
   );
 };

@@ -3,8 +3,8 @@
   --card-background: #2b2b2b;
   --text-color: #ffffff;
   --input-background: #3b3b3b;
-  --button-background: #007bff;
-  --button-hover: #0056b3;
+  --button-background: #00b864;
+  --button-hover: #006b3a;
   --danger-button-background: #dc3545;
   --danger-button-hover: #c82333;
   --button-secondary: #c47500;
@@ -135,6 +135,14 @@ input::placeholder {
   opacity: 0.7;
 }
 
+.date-filter {
+  padding: 10px;
+  border: 1px solid var(--line-color);
+  border-radius: 4px;
+  background-color: var(--input-background);
+  color: var(--text-color);
+}
+
 ul {
   list-style-type: none;
   padding: 0;
@@ -144,6 +152,22 @@ ul {
 li {
   margin: 0;
   padding: 0;
+}
+
+.text-red {
+  background-color: rgb(133, 0, 0);
+  font-weight: bold;
+  border-radius: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.text-green {
+  background-color: green;
+  font-weight: bold;
+  border-radius: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 .hr-line {
@@ -177,7 +201,7 @@ li {
 }
 
 .comment-box {
-  width: 90%;
+  width: 80%;
   padding: 8px;
   margin-top: 10px;
   border: 1px solid var(--line-color);

@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import "../styles/ThirdList.css";
-import RoutesHistoryModal from "./RoutesHistoryModal";
+import { useNavigate } from "react-router-dom";
 import AddThirdModal from "./AddThirdModal";
 import EditThirdModal from "./EditThirdModal";
-import { ThirdListProps, RouteHistory } from "../types/Types";
+import { ThirdListProps } from "../types/Types";
 import {
   getRoutesHistory,
   addThirdParty,
   updateThirdParty,
   deleteThirdParty,
-  deleteRoute,
 } from "../services/api";
 
 const ThirdList: React.FC<ThirdListProps> = ({
@@ -20,23 +19,20 @@ const ThirdList: React.FC<ThirdListProps> = ({
 }) => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
-  const [historyModalOpen, setHistoryModalOpen] = useState(false);
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [selectedThirdParty, setSelectedThirdParty] = useState<any>(null);
-  const [routesHistory, setRoutesHistory] = useState<RouteHistory[]>([]);
+  const [selectedThirdParty, setSelectedThirdParty] = useState<any>(null); // eslint-disable-line
+  const navigate = useNavigate();
 
-  // Open the Routes History Modal
-  const openHistoryModal = async () => {
-  try {
-    const data = await getRoutesHistory(); // API call returns updated fields
-    setRoutesHistory(data); // Directly set the data to state
-    setHistoryModalOpen(true);
-  } catch (err) {
-    console.error("Error al cargar el histórico de rutas:", err);
-  }
-};
+  // Fetch and redirect to routes history
+  const openHistoryPage = async () => {
+    try {
+      const data = await getRoutesHistory(); // Fetch the routes history from API
+      navigate("/routes-history", { state: { routesHistory: data } }); // Pass data through state
+    } catch (err) {
+      console.error("Error al cargar el histórico de rutas:", err);
+    }
+  };
 
   // Add a Third Party
   const handleAddThirdParty = async (newThirdParty: {
@@ -72,7 +68,7 @@ const ThirdList: React.FC<ThirdListProps> = ({
       alert("Tercero actualizado correctamente.");
     } catch (err) {
       console.error("Error editando el tercero:", err);
-      alert("Erro al actualizar el tercero.");
+      alert("Error al actualizar el tercero.");
     }
   };
 
@@ -85,28 +81,13 @@ const ThirdList: React.FC<ThirdListProps> = ({
       alert(`Tercero eliminado correctamente.`);
     } catch (err) {
       console.error("Error deleting third party:", err);
-      alert("Error al eliminar el tercero: ");
-    }
-  };
-
-  // Delete a Route
-  const handleDeleteRoute = async (id: number) => {
-    try {
-      await deleteRoute(id);
-      setRoutesHistory((prevHistory) =>
-        prevHistory.filter((route) => route.route_id !== id)
-      );
-      alert("Ruta eliminada correctamente.");
-    } catch (err) {
-      console.error("Error eliminando ruta:", err);
-      alert("Error al eliminar ruta.");
+      alert("Error al eliminar el tercero.");
     }
   };
 
   // Open Edit Modal for a Third Party
   const openEditModal = (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    thirdParty: any,
+    thirdParty: any, // eslint-disable-line
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.stopPropagation(); // Prevent the event from bubbling up
@@ -137,7 +118,7 @@ const ThirdList: React.FC<ThirdListProps> = ({
         >
           <i className="ti ti-backspace"></i>
         </button>
-        <button onClick={openHistoryModal} className="btn-icon">
+        <button onClick={openHistoryPage} className="btn-icon">
           <i className="ti ti-history"></i>
         </button>
         <button onClick={() => setAddModalOpen(true)} className="btn-icon">
@@ -191,14 +172,6 @@ const ThirdList: React.FC<ThirdListProps> = ({
             ))
         )}
       </ul>
-
-      <RoutesHistoryModal
-        isOpen={historyModalOpen}
-        title="Histórico de Rutas"
-        onClose={() => setHistoryModalOpen(false)}
-        routesHistory={routesHistory}
-        deleteRoute={handleDeleteRoute} // Pass deleteRoute method
-      />
 
       <AddThirdModal
         isOpen={addModalOpen}

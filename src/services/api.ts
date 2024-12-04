@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 
 // Crear una instancia de Axios con configuración base
@@ -35,10 +36,42 @@ export const getRoutesHistory = async () => {
   return response.data;
 };
 
-// Obtener rutas de hoy
-export const getTodayRoutes = async () => {
-  const response = await api.get("/routes/today");
-  return response.data;
+// Actualizar una Ruta
+export const updateRoute = async (
+  route_date: string,
+  comment: string,
+  is_finished: boolean,
+  observations: string,
+  routeId: number
+): Promise<any> => {
+  try {
+    // Validar parámetros antes de la solicitud
+    if (!routeId || typeof routeId !== "number") {
+      throw new Error("El ID de la ruta es obligatorio y debe ser un número.");
+    }
+    if (!route_date) {
+      throw new Error("La fecha de la ruta es obligatoria.");
+    }
+    if (typeof is_finished !== "boolean") {
+      throw new Error("El estado 'is_finished' debe ser un valor booleano.");
+    }
+
+    // Realizar la solicitud a la API
+    const response = await api.put(`/routes/${routeId}`, {
+      route_date,
+      comment: comment || "Sin comentarios",
+      is_finished,
+      observations: observations || "Sin observaciones",
+    });
+
+    return response.data;
+  } catch (error: any) {
+    console.error("Error al actualizar la ruta:", error.message || error);
+    throw new Error(
+      error.response?.data?.error ||
+        "Error al actualizar la ruta. Por favor, inténtalo nuevamente."
+    );
+  }
 };
 
 // Función para agregar un nuevo tercero

@@ -56,10 +56,12 @@ const AddThirdModal: React.FC<AddThirdModalProps> = ({ isOpen, onClose, onAdd })
     return (
         <div className="modal-overlay">
             <div className="modal">
-                <h2>Agregar Tercero</h2>
-                <button className="close-modal" onClick={onClose}>
-                    <i className="ti ti-x"></i>
-                </button>
+                <div className="header">
+                    <h2>Agregar Tercero</h2>
+                    <button className="close-modal" onClick={onClose}>
+                        <i className="ti ti-x"></i>
+                    </button>
+                </div>
                 <div className="modal-content">
                     {error && <div className="error-message">{error}</div>}
                     <div className="form-group">
