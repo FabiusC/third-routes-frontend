@@ -26,8 +26,8 @@ const Route: React.FC<RouteProps> = ({
   // State for managing dates
   const [dates, setDates] = useState<{ [id: number]: string }>({});
   // State for managing pending routes
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [pendingRoutes, setPendingRoutes] = useState<ThirdParty[]>([]);
+   
+  const [, setPendingRoutes] = useState<ThirdParty[]>([]);
 
   // Hook to navigate to another page
   const navigate = useNavigate();
